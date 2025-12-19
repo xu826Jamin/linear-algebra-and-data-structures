@@ -1,0 +1,48 @@
+Debugging Report - Question 4 Bubble Sort Analysis
+
+Bug #1:  
+Breakpoint Setup:
+- Set breakpoint at line: for(i = 0; i <= size - 1; i++)
+- Watched variables: i, size, array[i], array[i+1]
+
+Analysis:
+When stepping through the code, observed critical failure point:
+- At i = size-1, array[i+1] attempts to access array[size]
+- Watch window showed array access beyond allocated memory
+- Variable i reached invalid array position: array[3] for size=3
+
+Bug Fix Implementation:
+Changed loop condition from: for(i = 0; i <= size - 1; i++)
+To: for(i = 0; i < size - 1; i++)
+
+Verification:
+- Stepped through modified code
+- Watch window confirmed i stays within valid range
+- No more boundary violations observed
+
+Bug #2:  
+Breakpoint Setup:
+- Set breakpoint at swap operation
+- Watched variables: array[i], array[i+1], temp
+
+Debugger Output:
+Original problematic sequence:
+1. temp.intData = array[i].intData
+2. array[i].intData = temp.intData    // Lost original value
+3. array[i+1].intData = array[i].intData  // Copying same value
+
+Step-by-step debugging:
+- Both elements getting identical values
+- Original array[i+1] value completely lost
+- Watch window showed duplicate data after swap
+
+Corrected Implementation:
+temp = array[i];
+array[i] = array[i+1];
+array[i+1] = temp;
+
+Post-Fix Verification:
+- Debugger stepping showed proper value exchange
+- Watch window confirmed distinct values maintained
+- All test cases passed after correction
+
